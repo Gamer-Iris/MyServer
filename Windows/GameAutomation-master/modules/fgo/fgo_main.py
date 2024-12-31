@@ -4,6 +4,7 @@
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 # [修正履歴]                            |                                                                                                            #
 # V-001      : 2024/12/16               | Gamer-Iris   新規作成                                                                                      #
+# V-002      : 2024/12/31               | Gamer-Iris   AP回復に関する修正                                                                            #
 #                                       |                                                                                                            #
 ######################################################################################################################################################
 
@@ -109,6 +110,7 @@ QEST_START                = '././img/fgo/other/qest_start.PNG'
 QP                        = '././img/fgo/other/qp.PNG'
 RENZOKU_SYUTUGEKI         = '././img/fgo/other/renzoku_syutugeki.PNG'
 SCROLL                    = '././img/fgo/other/scroll.PNG'
+SCROLL_AP                 = '././img/fgo/other/scroll_AP.PNG'
 SCROLL_END                = '././img/fgo/other/scroll_end.PNG'
 SUMMON                    = '././img/fgo/other/summon.PNG'
 SUMMON_10_TIMES           = '././img/fgo/other/summon_10_times.PNG'
@@ -1317,14 +1319,14 @@ class fgo_main(GameAutomation, sshExec):
                 # 回復アイテムを未確認 → スクロール画像を検索
                 else:
                     # スクロール画像を確認 → 下へスクロール
-                    if(self.serch_image(wait_time = 0.7, img_path = SCROLL, conf = 0.95)):
+                    if(self.serch_image(wait_time = 0.7, img_path = SCROLL_AP, conf = 0.95)):
                         # 初回操作時 → 画面初期化
                         if(firstTutchScroll):
-                            self.serch_drag_image(wait_time = 0.7, img_path = SCROLL, conf = 0.95, offset = (0, -1440), drag_time = 0.3)
+                            self.serch_drag_image(wait_time = 0.7, img_path = SCROLL_AP, conf = 0.95, offset = (0, -1440), drag_time = 0.3)
                             # フラグをFalseへ変更
                             firstTutchScroll = False
                         #画面を下へスクロール
-                        self.serch_drag_image(wait_time = 0.7, img_path = SCROLL, conf = 0.95, offset = (0, 55), drag_time = 0.3)
+                        self.serch_drag_image(wait_time = 0.7, img_path = SCROLL_AP, conf = 0.95, offset = (0, 55), drag_time = 0.3)
                     if(num1 < 60):
                         num1+=1
                         continue

@@ -44,5 +44,6 @@ spec:
     - protocol: TCP
       port: 3306
       targetPort: 3306
-  type: ClusterIP
+      nodePort: 30306
+  type: NodePort
   clusterIP: 10.96.0.20

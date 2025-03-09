@@ -13,6 +13,8 @@ spec:
       labels:
         app: mariadb
     spec:
+      nodeSelector:
+        labelname: ubuntu-102
       containers:
       - name: mariadb
         image: mariadb:latest

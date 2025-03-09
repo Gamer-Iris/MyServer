@@ -13,6 +13,8 @@ spec:
       labels:
         app: phpmyadmin
     spec:
+      nodeSelector:
+        labelname: ubuntu-102
       containers:
         - name: phpmyadmin
           image: phpmyadmin/phpmyadmin:latest

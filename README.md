@@ -696,9 +696,10 @@ sudo systemctl status nfs-server
 showmount -e
 ```
 
-１６.CoreDNS設定①（Windows_TereTerm（VM（k8s環境いずれか））側操作）<br>
+１６.CoreDNS設定（Windows_TereTerm（VM（k8s環境いずれか））側操作）<br>
 ```
 kubectl apply -f ~/MyServer/Linux/kubernetes/apps/coredns/coredns-configmap.yml
+kubectl apply -f ~/MyServer/Linux/kubernetes/apps/coredns/coredns-service.yml
 kubectl delete pod -n kube-system -l k8s-app=kube-dns
 sudo reboot
 kubectl get pods -n kube-system -o wide

@@ -1,0 +1,40 @@
+name: Build and Release # プラグインのビルド、リリースを行うワークフロー
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest # Ubuntuの最新環境でジョブを実行
+
+    steps:
+      - uses: actions/checkout@v3 # リポジトリのコードをチェックアウト
+
+      - uses: actions/setup-java@v3 # Java環境のセットアップ
+        with:
+          java-version: "23" # 使用するJavaのバージョン
+          distribution: "temurin" # Javaディストリビューション
+
+      - name: Extract version & artifactId from pom.xml # pom.xml からバージョンとアーティファクトIDを取得
+        id: extract # このステップのIDを設定
+        run: |
+          version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          artifact=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+          echo "VERSION=$version" >> $GITHUB_ENV
+          echo "ARTIFACT=$artifact" >> $GITHUB_ENV
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "artifact=$artifact" >> $GITHUB_OUTPUT
+        working-directory: Linux/applications/minecraft/greetmate # pom.xmlのあるディレクトリに移動してから実行
+
+      - name: Build plugin # プラグインのビルドを実行
+        run: mvn clean package # パッケージをビルド
+        working-directory: Linux/applications/minecraft/greetmate # pom.xmlのあるディレクトリに移動してから実行
+
+      - name: Release jar on GitHub # GitHubのリリースにjarファイルをアップロード
+        uses: softprops/action-gh-release@v1 # GitHubのリリースを作成
+        with:
+          name: "${{ steps.extract.outputs.artifact }} v${{ steps.extract.outputs.version }}" # リリース名
+          tag_name: "v${{ steps.extract.outputs.version }}" # タグ名
+          files: Linux/applications/minecraft/greetmate/target/${{ steps.extract.outputs.artifact }}-${{ steps.extract.outputs.version }}.jar # リリースに含めるファイル
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHubの認証トークン

@@ -1,0 +1,21 @@
+name: Test on Pull Request # プルリクエスト時にテストを実行するワークフロー
+
+on:
+  pull_request:
+    branches: ["main"] # "main" ブランチへのPRがトリガー
+
+jobs:
+  test:
+    runs-on: ubuntu-latest # GitHubが提供するUbuntuの最新環境で実行
+
+    steps:
+      - uses: actions/checkout@v3 # リポジトリのコードをチェックアウト
+
+      - uses: actions/setup-java@v3 # Javaのセットアップを実行
+        with:
+          java-version: "23" # 使用するJavaのバージョン
+          distribution: "temurin" # Javaディストリビューション
+
+      - name: Run Tests # テスト実行ステップの名前
+        run: mvn test # Mavenコマンドでテストを実行
+        working-directory: Linux/applications/minecraft/greetmate # Mavenコマンドを実行するディレクトリ
